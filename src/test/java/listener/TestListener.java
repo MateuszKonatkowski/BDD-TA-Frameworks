@@ -30,7 +30,6 @@ public class TestListener implements ITestListener {
         WebDriver driver = DriverManager.getDriver();
         ScreenShotUtil.takeScreenshot(driver, result.getName());
         ScreenshotUtils.attachPageScreenshot(driver, "Failure screenshot - " + result.getName());
-        Allure
     }
 
     @Override
