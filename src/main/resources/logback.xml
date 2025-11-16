@@ -1,0 +1,43 @@
+<configuration>
+
+    <!-- Shows Logback's internal messages in the console. Helpful if something goes wrong with logging setup -->
+    <statusListener class="ch.qos.logback.core.status.OnConsoleStatusListener" />
+
+    <!-- Create two variables: current date and time, used in log file names -->
+    <timestamp key="date" datePattern="yyyy-MM-dd"/>    <!-- Example: 2025-06-27 -->
+    <timestamp key="time" datePattern="HH-mm-ss"/>      <!-- Example: 15-40-12 -->
+
+    <!-- Folder where logs will be stored, using today's date -->
+    <property name="LOG_DIR" value="target/logs/${date}" />
+
+    <!-- File logger: logs will be saved to a file named with current time -->
+    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+        <file>${LOG_DIR}/test_run_${time}.log</file>   <!-- Example: target/logs/2025-06-27/test_run_15-40-12.log -->
+        <append>true</append>                          <!-- If file exists, add new logs to the end -->
+        <encoder>
+            <!-- Log format: time, level, class name, and message -->
+            <pattern>%d{HH:mm:ss} %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Console logger: shows logs in terminal -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <!-- Same format as file logs -->
+            <pattern>%d{HH:mm:ss} %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Main logger configuration: show INFO level logs and above -->
+    <root level="info">
+        <appender-ref ref="STDOUT" />  <!-- Show logs in console -->
+        <appender-ref ref="FILE" />    <!-- Save logs to file -->
+    </root>
+
+    <!-- Reduce noise from third-party libraries (like Selenium) -->
+    <logger name="org.apache.hc.client5" level="WARN"/>
+    <logger name="io.github.bonigarcia.wdm" level="WARN"/>
+    <logger name="org.openqa.selenium" level="WARN"/>
+
+
+</configuration>
